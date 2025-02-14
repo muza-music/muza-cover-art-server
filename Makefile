@@ -55,12 +55,12 @@ certs:
 	mkdir -p certs
 	openssl req -x509 -newkey rsa:4096 -nodes -out certs/server.crt -keyout certs/server.key -days 365 -subj "/CN=localhost"
 
-run-ssl: venv certs
+run-ssl: venv
 	PYTHON=$(PYTHON) HOST=0.0.0.0 PORT=5000 WORKERS=3 IMAGES_DIR=images USE_SSL=1 \
 	CERT_FILE=certs/server.crt KEY_FILE=certs/server.key \
 	./run_server.sh
 
-run-with-upload-ssl: venv certs
+run-with-upload-ssl: venv
 	PYTHON=$(PYTHON) HOST=0.0.0.0 PORT=5000 WORKERS=3 IMAGES_DIR=images \
 	USE_SSL=1 ALLOW_UPLOAD=1 \
 	CERT_FILE=certs/server.crt KEY_FILE=certs/server.key \
@@ -71,17 +71,17 @@ container-build:
 	podman build -t $(CONTAINER_IMAGE) -f Containerfile .
 
 container-run:
-	podman run -p 5000:5000 -v ./images:/app/images $(CONTAINER_IMAGE)
+	podman run -p 5000:5000 -v ./images:/app/images:Z $(CONTAINER_IMAGE)
 
 container-run-upload:
-	podman run -p 5000:5000 -v ./images:/app/images \
+	podman run -p 5000:5000 -v ./images:/app/images:Z \
 		-e ALLOW_UPLOAD=1 \
 		$(CONTAINER_IMAGE)
 
-container-run-ssl: certs
+container-run-ssl:
 	podman run -p 5000:5000 \
-		-v ./images:/app/images \
-		-v ./certs:/app/certs \
+		-v ./images:/app/images:Z \
+		-v ./certs:/app/certs:Z \
 		-e USE_SSL=1 \
 		-e CERT_FILE=certs/server.crt \
 		-e KEY_FILE=certs/server.key \
