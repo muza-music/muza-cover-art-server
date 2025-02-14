@@ -43,25 +43,25 @@ clean:
 	find . -type d -name '__pycache__' -delete
 
 run: venv
-	./run_server.sh
+	PYTHON=$(PYTHON) ./run_server.sh
 
 run-dev: venv
 	$(PYTHON) muza_cover_art_server.py
 
 run-with-upload: venv
-	$(PYTHON) muza_cover_art_server.py --allow-upload
+	PYTHON=$(PYTHON) ALLOW_UPLOAD=1 ./run_server.sh
 
 certs:
 	mkdir -p certs
 	openssl req -x509 -newkey rsa:4096 -nodes -out certs/server.crt -keyout certs/server.key -days 365 -subj "/CN=localhost"
 
 run-ssl: venv certs
-	HOST=0.0.0.0 PORT=5000 WORKERS=3 IMAGES_DIR=images USE_SSL=1 \
+	PYTHON=$(PYTHON) HOST=0.0.0.0 PORT=5000 WORKERS=3 IMAGES_DIR=images USE_SSL=1 \
 	CERT_FILE=certs/server.crt KEY_FILE=certs/server.key \
 	./run_server.sh
 
 run-with-upload-ssl: venv certs
-	HOST=0.0.0.0 PORT=5000 WORKERS=3 IMAGES_DIR=images \
+	PYTHON=$(PYTHON) HOST=0.0.0.0 PORT=5000 WORKERS=3 IMAGES_DIR=images \
 	USE_SSL=1 ALLOW_UPLOAD=1 \
 	CERT_FILE=certs/server.crt KEY_FILE=certs/server.key \
 	./run_server.sh

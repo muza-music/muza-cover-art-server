@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Default values
+PYTHON=${PYTHON:-"python3"}
 HOST=${HOST:-"0.0.0.0"}
 PORT=${PORT:-5000}
 WORKERS=${WORKERS:-3}
@@ -28,7 +29,7 @@ if [ ! -z "$ALLOW_UPLOAD" ]; then
 fi
 
 # Run with Gunicorn
-exec gunicorn \
+exec ${PYTHON} -m gunicorn \
     --bind ${HOST}:${PORT} \
     --workers ${WORKERS} \
     ${SSL_FLAGS} \
