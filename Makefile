@@ -49,7 +49,7 @@ run-dev: venv
 	$(PYTHON) muza_cover_art_server.py
 
 run-with-upload: venv
-	PYTHON=$(PYTHON) ALLOW_UPLOAD=1 ./run_server.sh
+	$(PYTHON) muza_cover_art_server.py --allow-upload
 
 certs:
 	mkdir -p certs

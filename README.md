@@ -131,18 +131,6 @@ podman run -p 5000:5000 \
     quay.io/yaacov/muza-cover-art-server:latest
 ```
 
-### Running Containerized with Environment Variables
-
-```bash
-podman run -p 5000:5000 \
-  -v ./images:/app/images:Z \
-  -v ./certs:/app/certs:Z \
-  -e USE_SSL=true \
-  -e CERT_FILE=certs/server.crt \
-  -e KEY_FILE=certs/server.key \
-  quay.io/yaacov/muza-cover-art-server:latest
-```
-
 ## Command Line Options
 
 ```bash
