@@ -19,7 +19,10 @@ cd muza-cover-art-server
 
 2. Create a virtual environment and install dependencies:
 ```bash
+# Set up venv
 make all
+# Activate venv
+source venv/bin/activate
 ```
 
 ### Running the Server
